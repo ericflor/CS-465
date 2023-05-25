@@ -13,13 +13,9 @@ if (process.platform === 'win32') {
   });
 }
 
-// Remove the line below
-// mongoose.set('useCreateIndex', true);
-
 const connect = () => {
   setTimeout(() => mongoose.connect(dbURI, {
     useNewUrlParser: true,
-    // Remove the 'useCreateIndex' option
   }), 1000);
 };
 
