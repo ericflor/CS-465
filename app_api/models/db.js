@@ -22,27 +22,26 @@ const connect = () => {
 mongoose.connection.on('connected', () => {
   console.log(`Mongoose connected to ${dbURI}`);
   
-  // Retrieve all trips
-//   const Trip = mongoose.model('trips');
-//   const query = Trip.find({});
-//   query.exec()
-//     .then(trips => {
-//       console.log('Retrieved Trips:', trips);
-//       // Perform any desired operations with the retrieved trips data
+ // Retrieve all trips
+  const Trip = mongoose.model('trips');
+  const query = Trip.find({});
+  query.exec()
+    .then(trips => {
+      console.log('Retrieved Trips:', trips);
 
-//       // Close the MongoDB connection
-//     //   mongoose.connection.close(() => {
-//     //     console.log('Mongoose disconnected');
-//     //   });
-//     })
-//     .catch(err => {
-//       console.error(err);
+      // Close the MongoDB connection
+    //   mongoose.connection.close(() => {
+    //     console.log('Mongoose disconnected');
+    //   });
+    })
+    .catch(err => {
+      console.error(err);
 
-//       // Close the MongoDB connection
-//     //   mongoose.connection.close(() => {
-//     //     console.log('Mongoose disconnected');
-//     //   });
-//     });
+      // Close the MongoDB connection
+    //   mongoose.connection.close(() => {
+    //     console.log('Mongoose disconnected');
+    //   });
+    });
 });
 mongoose.connection.on('error', (err) => {
   console.log(`Mongoose connection error: ${err}`);
