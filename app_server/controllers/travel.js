@@ -19,7 +19,6 @@ const travelList = (req, res) => {
     json: {},
   };
   console.log("TravelController.travelList calling => " + requestOptions.url);
-  console.log("IN TRAVEL LIST");
   request(requestOptions, (err, {statusCode}, body) => {
     if (err) {
       console.error(err);
