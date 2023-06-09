@@ -7,6 +7,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
 @Injectable()
 export class TripDataService {
   constructor(private httpClient: HttpClient) {}

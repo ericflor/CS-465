@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { trips } from '../data/trips';
+// import { trips } from '../data/trips';
 import { Trip } from 'models/trip';
 import { TripDataService } from 'services/trip-data.service';
 import { Router } from '@angular/router';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './trip-listing.component.html',
   styleUrls: ['./trip-listing.component.css'],
 })
+
 export class TripListingComponent implements OnInit {
   // trips: Array<any> = trips;
 

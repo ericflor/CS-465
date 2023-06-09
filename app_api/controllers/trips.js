@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 require("../models/travlr");
 const Model = mongoose.model("trips");
 
+// ALL THE COMMENTED OUT CODE DOESN'T WORK 
+
 // GET ALL TRIPS
 const tripsList = async (req, res) => {
   try {
@@ -15,6 +17,7 @@ const tripsList = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
 // const tripsList = async(req, res) => {
 //     Model.find({})
 //     .exec((err, trips) => {
@@ -41,6 +44,7 @@ const tripsFindByCode = async (req, res) => {
     return res.status(500).json(err);
   }
 };
+
 // const tripsFindByCode = async(req, res) => {
 //     Model.find({'code': req.params.tripCode})
 //     .exec((err, trips) => {
@@ -81,6 +85,7 @@ const tripsFindByCode = async (req, res) => {
 //   }
 // };
 
+// ADD A TRIP
 const tripsAddTrip = async (req, res) => {
   try {
     const trip = await Model.create({
@@ -134,7 +139,7 @@ const tripsUpdateTrip = async (req, res) => {
         });
       }
       return res
-        .status(500) // server error
+        .status(500)
         .json(err);
     });
 };

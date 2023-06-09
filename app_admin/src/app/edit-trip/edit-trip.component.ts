@@ -8,6 +8,7 @@ import { TripDataService } from 'services/trip-data.service';
   templateUrl: './edit-trip.component.html',
   styleUrls: ['./edit-trip.component.css'],
 })
+
 export class EditTripComponent implements OnInit {
   constructor(
     private router: Router,
@@ -44,11 +45,15 @@ export class EditTripComponent implements OnInit {
         tripCode +
         "')"
     );
+
+      // SAME THING HERE, PROVIDED INSTRUCTIONS DON'T WORK WITH MODERN IMPLEMENATION OF HTTP CLIENT
+
     // this.tripService.getTrip(tripCode).then((data:any) => {
     //   console.log(data);
     //   // Don't use editForm.setValue() as it will throw console error
     //   this.editForm.patchValue(data[0]);
     // });
+
     this.tripService.getTrip(tripCode).subscribe((data: any) => {
       console.log(data);
       // Don't use editForm.setValue() as it will throw console error
@@ -56,7 +61,7 @@ export class EditTripComponent implements OnInit {
     });
   }
 
-  // onSubmit() {
+  // onSubmit() { // SAME THING HERE, ALL DEPRECATED
   //   this.submitted = true;
   //   if (this.editForm.valid) {
   //     this.tripService.updateTrip(this.editForm.value).then((data:any) => {
