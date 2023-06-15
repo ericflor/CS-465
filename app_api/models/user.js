@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const crypto = require("crypto");
-const jwt = require("jsonwebtoken");
+const jwToken = require("jsonwebtoken");
+
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -34,7 +35,7 @@ userSchema.methods.generateJwt = function () {
   const expiry = new Date();
   expiry.setDate(expiry.getDate() + 7);
 
-  return jwt.sign(
+  return jwToken.sign(
     {
       _id: this._id,
       email: this.email,
