@@ -46,4 +46,4 @@ userSchema.methods.generateJwt = function () {
   );
 };
 
-mongoose.model("users", userSchema);
+mongoose.model('users', userSchema);

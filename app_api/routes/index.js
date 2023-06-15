@@ -1,27 +1,30 @@
 const express = require("express");
 const router = express.Router();
-const jwt = require('jsonwebtoken');
+const jwt = require("express-jwt");
+// const jwt = require("jsonwebtoken");
 
 
 const auth = jwt({
   secret: process.env.JWT_SECRET,
   userProperty: "payload",
+  algorithms: ["HS256"],
 });
 
 const tripsController = require("../controllers/trips");
 const authController = require("../controllers/authentication");
 
+// ROUTING FOR AUTHENTICATION
+router.route("/login").post(authController.login);
+router.route("/register").post(authController.register);
+
 router
   .route("/trips")
   .get(tripsController.tripsList)
   .post(auth, tripsController.tripsAddTrip);
+
 router
   .route("/trips/:tripCode")
   .get(tripsController.tripsFindByCode)
   .put(auth, tripsController.tripsUpdateTrip);
-
-// ROUTING FOR AUTHENTICATION
-router.route("/login").post(authController.login);
-router.route("/register").post(authController.register);
 
 module.exports = router;
