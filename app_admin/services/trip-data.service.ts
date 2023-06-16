@@ -65,6 +65,23 @@ export class TripDataService {
     );
   }
 
+  // public login(user: User): Observable<AuthResponse> {
+  //   return this.makeAuthApiCall('user/login', user);
+  // }
+
+  // public register(user: User): Observable<AuthResponse> {
+  //   return this.makeAuthApiCall('user/register', user);
+  // }
+
+  // private makeAuthApiCall(urlPath: string, user: User): Observable<AuthResponse> {
+  //   const url: string = `${this.apiURL}${urlPath}`;
+  //   return this.httpClient.post<AuthResponse>(url, user).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       return throwError('Something went wrong. Please try again later.' + error);
+  //     })
+  //   );
+  // }
+
   public login(user: User): Observable<AuthResponse> {
     return this.makeAuthApiCall('login', user);
   }
@@ -74,7 +91,7 @@ export class TripDataService {
   }
 
   private makeAuthApiCall(urlPath: string, user: User): Observable<AuthResponse> {
-    const url: string = `${this.apiURL}/${urlPath}`;
+    const url: string = `${this.apiURL}${urlPath}`;
     return this.httpClient.post<AuthResponse>(url, user).pipe(
       catchError((error: HttpErrorResponse) => {
         return throwError('Something went wrong. Please try again later.');

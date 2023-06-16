@@ -6,7 +6,6 @@ import { AuthenticationService } from 'services/authentication.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-
 export class NavbarComponent implements OnInit {
 
   constructor(private authenticationService: AuthenticationService) {}
@@ -18,6 +17,6 @@ export class NavbarComponent implements OnInit {
   }
 
   public onLogout(): void {
-    return this.authenticationService.logout();
+    this.authenticationService.logout();
   }
 }

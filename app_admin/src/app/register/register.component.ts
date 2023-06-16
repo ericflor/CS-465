@@ -4,15 +4,14 @@ import { AuthenticationService } from 'services/authentication.service';
 import { User } from 'models/user';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css'],
 })
-export class LoginComponent implements OnInit {
-
+export class RegisterComponent implements OnInit {
   public formError: string = '';
 
-  public credentials = {
+  public newUser: User = {
     name: '',
     email: '',
     password: ''
@@ -25,18 +24,18 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {}
 
-  public onLoginSubmit(): void {
+  public onRegisterSubmit(): void {
     this.formError = '';
-    if (!this.credentials.email || !this.credentials.password) {
+    if (!this.newUser.name || !this.newUser.email || !this.newUser.password) {
       this.formError = 'All fields are required, please try again';
     } else {
-      this.doLogin();
+      this.doRegister();
     }
   }
 
-  private doLogin(): void {
+  private doRegister(): void {
     this.authenticationService
-      .login(this.credentials)
+      .register(this.newUser)
       .then(() => this.router.navigateByUrl('/list-trips'))  // Redirect to trips component
       .catch((message: string) => (this.formError = message));
   }

@@ -23,16 +23,6 @@ export class TripListingComponent implements OnInit {
   trips: Trip[] = []; // needs to be initialized
   message: string | undefined; // needs to be initialized
 
-  // THIS WAY IS DEPRECATED AND WON'T WORK WITH HOW I SET UP HTTPCLIENT
-  // private getTrips(): void {
-  //   console.log('Inside TripListingComponent#getTrips');
-  //   this.message = 'Searching for trips';
-  //   this.tripDataService.getTrips().then((foundTrips: string | any[]) => {
-  //     this.message = foundTrips.length > 0 ? '' : 'No trips found';
-  //     this.trips = foundTrips;
-  //   });
-  // }
-
   public isLoggedIn(): boolean {
     return this.auth.isLoggedIn();
   }
