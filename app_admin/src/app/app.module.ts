@@ -15,6 +15,7 @@ import { AuthenticationService } from 'services/authentication.service';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { AuthGuard } from './auth.guard';
 
 
 @NgModule({
@@ -27,7 +28,7 @@ import { RegisterComponent } from './register/register.component';
     NavbarComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   imports: [
     FormsModule,

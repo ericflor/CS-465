@@ -39,11 +39,21 @@ app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:4200");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, Email"
   );
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
   next();
 });
+
+// const cors = require('cors');
+
+// // ...
+
+// // Enable CORS middleware
+// app.use(cors({
+//   allowedHeaders: ['Content-Type', 'Authorization', 'Email'], // Add 'Email' to the allowed headers
+// }));
+
 
 // app.use("/api", (req, res, next) => {
 //   res.header("Access-Control-Allow-Origin", "http://localhost:4200");

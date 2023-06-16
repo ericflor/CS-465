@@ -1,5 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
-import { BROWSER_STORAGE } from '../src/app/storage';
+// import { BROWSER_STORAGE } from '../src/app/storage';
+import { BROWSER_STORAGE } from 'src/app/storage';
+
 import { User } from '../models/user';
 import { AuthResponse } from '../models/authresponse';
 import { TripDataService } from '../services/trip-data.service';
@@ -24,6 +26,8 @@ export class AuthenticationService {
     try {
       const authResp: AuthResponse | undefined = await this.tripDataService.login(user).toPromise();
       if (authResp && authResp.token) {
+        const userEmail = user.email;
+        localStorage.setItem("currentUser", userEmail);
         this.saveToken(authResp.token);
       } else {
         throw new Error('Login failed: Invalid response or missing token');
@@ -38,6 +42,8 @@ export class AuthenticationService {
     try {
       const authResp: AuthResponse | undefined = await this.tripDataService.register(user).toPromise();
       if (authResp && authResp.token) {
+        const userName = user.name;
+        localStorage.setItem("currentUser", userName);
         this.saveToken(authResp.token);
       } else {
         throw new Error('Registration failed: Invalid response or missing token');
@@ -49,6 +55,7 @@ export class AuthenticationService {
   }
 
   public logout(): void {
+    this.storage.removeItem('currentUser');
     this.storage.removeItem('travlr-token');
   }
 

@@ -5,6 +5,36 @@
       class="navbar-toggler-icon"></span> </button>
   <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
+      <a class="nav-item nav-link active" routerLink="listtrips"><span class=" sr-only ">(current)</span></a>
+    </div>
+  </div>
+  <div class="navbar-middle">
+    <div *ngIf="isLoggedIn()" class="navbar-item font-weight-bold">
+      Welcome, {{ getCurrentUserName() }}
+    </div>
+  </div>
+  <div class="navbar-end">
+    <a class="navbar-item btn btn-primary mr-2" routerLink="login" *ngIf="!isLoggedIn()">
+      Log In
+    </a>
+    <a class="navbar-item btn btn-primary" (click)="onLogout()" *ngIf="isLoggedIn()">
+      Log Out
+    </a>
+    <a class="navbar-item btn btn-primary ml-2" routerLink="register" *ngIf="!isLoggedIn()">
+      Register
+    </a>
+  </div>
+</nav>
+
+
+
+<!-- <nav class="navbar navbar-expand navbar-light bg-light">
+  <a class="navbar-brand" href="#"><img src="/assets/images/logo.png"></a>
+  <button class="navbar-toggler" type="button" datatoggle="collapse" data-target="#navbarNavAltMarkup"
+    ariacontrols="navbarNavAltMarkup" aria-expanded="false" arialabel="Toggle navigation"> <span
+      class="navbar-toggler-icon"></span> </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
       <a class="nav-item nav-link active" routerLink="listtrips">Trips<span class=" sr-only ">(current)</span></a>
     </div>
   </div>
@@ -19,4 +49,4 @@
       <span class="has-icon-left">Register</span>
     </a>
   </div>
-</nav>
+</nav> -->
