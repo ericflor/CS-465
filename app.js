@@ -10,6 +10,7 @@ const passport = require("passport");
 const indexRouter = require("./app_server/routes/index");
 const apiRouter = require("./app_api/routes/index");
 const travelRouter = require("./app_server/routes/travel");
+const userRouter = require("./app_server/routes/user");
 
 const app = express();
 
@@ -33,19 +34,41 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // CORS
-app.use("/api", (req, res, next) => {
+// CORS
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "http://localhost:4200");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization, Email"
   );
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
   next();
 });
 
+// const cors = require('cors');
+
+// // ...
+
+// // Enable CORS middleware
+// app.use(cors({
+//   allowedHeaders: ['Content-Type', 'Authorization', 'Email'], // Add 'Email' to the allowed headers
+// }));
+
+
+// app.use("/api", (req, res, next) => {
+//   res.header("Access-Control-Allow-Origin", "http://localhost:4200");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+//   );
+//   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
+//   next();
+// });
+
 app.use("/", indexRouter);
 app.use("/api", apiRouter);
 app.use("/travel", travelRouter);
+app.use("/user", userRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

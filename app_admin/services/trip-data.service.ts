@@ -1,94 +1,203 @@
-import { Injectable } from '@angular/core';
-// import { Http } from '@angular/http'; // this import doesn't work, it's deprecated
-import { HttpClient, HttpErrorResponse } from '@angular/common/http'; // it's supposed to be this one
+import { Inject, Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Trip } from 'models/trip';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { User } from 'models/user';
+import { AuthResponse } from 'models/authresponse';
+import { BROWSER_STORAGE } from 'src/app/storage';
+import jwt_decode from 'jwt-decode';
+
 
 @Injectable({
   providedIn: 'root',
 })
-
-@Injectable()
 export class TripDataService {
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    @Inject(BROWSER_STORAGE) private storage: Storage
+  ) {}
 
   private apiURL = 'http://localhost:3000/api/';
   private tripURL = `${this.apiURL}trips/`;
 
-  // THE PROMISE PATTERN IS ALSO DEPRECATED, USING MODERN HTTPCLIENT OBSERVABLES INSTEAD
 
-  // public getTrips(): Promise<Trip[]> {
-  //   console.log('Inside TripDataService getTrips method');
-  //   return this.httpClient
-  //     .get(`${this.apiURL}trips`)
-  //     .toPromise()
-  //     .then(response => response.json() as Trip[])
-  //     .catch(this.handleError);
+  // public addTrip(formData: FormData): Observable<Trip[]> {
+  //   const headers = this.getHeadersWithToken();
+  //   return this.httpClient.post<Trip[]>(this.tripURL, formData, { headers }).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       return throwError('Something went wrong. Please try again later.');
+  //     })
+  //   );
   // }
 
-  // private handleError(error: any): Promise<any> {
-  //   console.error('Something has gone wrong: ', error);
-  //   return Promise.reject(error.message || error);
+
+  // public updateTrip(formData: Trip): Observable<Trip> {
+  //   const headers = this.getHeadersWithToken();
+  //   return this.httpClient.put<Trip>(`${this.tripURL}${formData.code}`, formData, { headers }).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       return throwError('Something went wrong. Please try again later.');
+  //     })
+  //   );
   // }
+
+  public addTrip(formData: FormData): Observable<Trip[]> {
+    var headers = this.getHeadersWithToken();
+    const token = localStorage.getItem('travlr-token');
+    if (token) {
+      const decodedToken = jwt_decode(token) as { email: string };
+      const email = decodedToken.email;
+      headers = headers.set('Email', email);
+    }
+    return this.httpClient.post<Trip[]>(this.tripURL, formData, { headers }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError('Something went wrong. Please try again later.');
+      })
+    );
+  }
+
+  public updateTrip(formData: Trip): Observable<Trip> {
+    var headers = this.getHeadersWithToken();
+    const token = localStorage.getItem('travlr-token');
+    if (token) {
+      const decodedToken = jwt_decode(token) as { email: string };
+      const email = decodedToken.email;
+      headers = headers.set('Email', email);
+    }
+    return this.httpClient.put<Trip>(`${this.tripURL}${formData.code}`, formData, { headers }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError('Something went wrong. Please try again later.');
+      })
+    );
+  }
+
+
+
+  private getHeadersWithToken(): HttpHeaders {
+    const token = localStorage.getItem('travlr-token');
+    let headers = new HttpHeaders();
+
+    if (token) {
+      const decodedToken = jwt_decode(token) as { email: string };
+      const email = decodedToken.email;
+
+      headers = headers.set('Authorization', `Bearer ${token}`);
+      headers = headers.set('Email', email);
+    }
+
+    return headers;
+  }
+
+
+  public deleteTrip(tripCode: string): Observable<any> {
+    const headers = this.getHeadersWithToken();
+    return this.httpClient.delete(`${this.tripURL}${tripCode}`, { headers }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError('Something went wrong. Please try again later.');
+      })
+    );
+  }
 
   public getTrips(): Observable<Trip[]> {
     console.log('Inside TripDataService getTrips method');
-    return this.httpClient
-      .get<Trip[]>(`${this.apiURL}trips`)
-      .pipe(catchError(this.handleError));
+    return this.httpClient.get<Trip[]>(`${this.apiURL}trips`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError('Something went wrong. Please try again later.');
+      })
+    );
   }
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error occurred
-      console.error('An error occurred:', error.error.message);
-    } else {
-      // Backend returned an unsuccessful response code
-      console.error(
-        `Backend returned code ${error.status}, ` + `body was: ${error.error}`
-      );
-    }
-    return throwError(() => 'Something went wrong. Please try again later.');
-  }
-
-  public addTrip(formData: FormData): Observable<Trip[]> {
-    console.log('Inside TripDataService addTrip method');
-    return this.httpClient
-      .post<Trip[]>(this.tripURL, formData)
-      .pipe(catchError(this.handleError));
-  }
-
-  // public getTrip(tripCode: string): Promise<Trip> {
-  //   console.log('Inside TripDataService#getTrip(tripCode)');
-  //   return this.http
-  //     .get(this.tripUrl + tripCode)
-  //     .toPromise()
-  //     .then((response) => response.json() as Trip)
-  //     .catch(this.handleError);
-  // }
 
   public getTrip(tripCode: string): Observable<Trip> {
     console.log('Inside TripDataService#getTrip(tripCode)');
-    return this.httpClient
-      .get<Trip>(`${this.tripURL}${tripCode}`)
-      .pipe(catchError(this.handleError));
+    return this.httpClient.get<Trip>(`${this.tripURL}${tripCode}`).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError('Something went wrong. Please try again later.');
+      })
+    );
   }
 
-  // public updateTrip(formData: Trip): Promise<Trip> {
-  //   console.log('Inside TripDataService#upateTrip');
+  public login(user: User): Observable<AuthResponse> {
+    return this.makeAuthApiCall('login', user);
+  }
+
+  public register(user: User): Observable<AuthResponse> {
+    return this.makeAuthApiCall('register', user);
+  }
+
+  private makeAuthApiCall(urlPath: string, user: User): Observable<AuthResponse> {
+    const url: string = `${this.apiURL}${urlPath}`;
+    return this.httpClient.post<AuthResponse>(url, user).pipe(
+      catchError((error: HttpErrorResponse) => {
+        return throwError('Something went wrong. Please try again later.');
+      })
+    );
+  }
+
+
+
+
+  // public updateTrip(formData: Trip): Observable<Trip> {
+  //   console.log('Inside TripDataService#updateTrip');
   //   console.log(formData);
-  //   return this.http
-  //     .put(this.tripUrl + formData.code, formData)
-  //     .toPromise()
-  //     .then((response) => response.json() as Trip[])
-  //     .catch(this.handleError);
+  //   return this.httpClient.put<Trip>(`${this.tripURL}${formData.code}`, formData).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       return throwError('Something went wrong. Please try again later.');
+  //     })
+  //   );
   // }
 
-  public updateTrip(formData: Trip): Observable<Trip> {
-    console.log('Inside TripDataService#updateTrip');
-    console.log(formData);
-    return this.httpClient
-      .put<Trip>(`${this.tripURL}${formData.code}`, formData)
-      .pipe(catchError(this.handleError));
-  }
+  // public deleteTrip(tripCode: string): Observable<any> {
+  //   console.log('Inside TripDataService#deleteTrip');
+  //   return this.httpClient.delete(`${this.tripURL}${tripCode}`).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       return throwError('Something went wrong. Please try again later.');
+  //     })
+  //   );
+  // }
+
+  // public login(user: User): Observable<AuthResponse> {
+  //   return this.makeAuthApiCall('user/login', user);
+  // }
+
+  // public register(user: User): Observable<AuthResponse> {
+  //   return this.makeAuthApiCall('user/register', user);
+  // }
+
+  // private makeAuthApiCall(urlPath: string, user: User): Observable<AuthResponse> {
+  //   const url: string = `${this.apiURL}${urlPath}`;
+  //   return this.httpClient.post<AuthResponse>(url, user).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       return throwError('Something went wrong. Please try again later.' + error);
+  //     })
+  //   );
+  // }
+
+  // public addTrip(formData: FormData): Observable<Trip[]> {
+  //   console.log('Inside TripDataService addTrip method');
+  //   return this.httpClient.post<Trip[]>(this.tripURL, formData).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       return throwError('Something went wrong. Please try again later.');
+  //     })
+  //   );
+  // }
+
+
+
+  // public getTrip(tripCode: string): Observable<Trip> {
+  //   const headers = this.getHeadersWithToken();
+  //   return this.httpClient.get<Trip>(`${this.tripURL}${tripCode}`, { headers }).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       return throwError('Something went wrong. Please try again later.');
+  //     })
+  //   );
+  // }
+
+  // public getTrips(): Observable<Trip[]> {
+  //   const headers = this.getHeadersWithToken();
+  //   return this.httpClient.get<Trip[]>(`${this.apiURL}trips`, { headers }).pipe(
+  //     catchError((error: HttpErrorResponse) => {
+  //       return throwError('Something went wrong. Please try again later.');
+  //     })
+  //   );
+  // }
 }

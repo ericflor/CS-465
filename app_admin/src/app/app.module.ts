@@ -9,6 +9,14 @@ import { AddTripComponent } from './add-trip/add-trip.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-router.module';
 import { EditTripComponent } from './edit-trip/edit-trip.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { CommonModule } from '@angular/common';
+import { AuthenticationService } from 'services/authentication.service';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { AuthGuard } from './auth.guard';
+
 
 @NgModule({
   declarations: [
@@ -16,17 +24,23 @@ import { EditTripComponent } from './edit-trip/edit-trip.component';
     TripListingComponent,
     TripCardComponent,
     AddTripComponent,
-    EditTripComponent
+    EditTripComponent,
+    NavbarComponent,
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     HttpClientModule,
-    FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    CommonModule
   ],
   providers: [
-    TripDataService
+    TripDataService,
+    AuthenticationService
   ],
   bootstrap: [AppComponent]
 })

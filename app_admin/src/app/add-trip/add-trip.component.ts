@@ -38,7 +38,7 @@ export class AddTripComponent implements OnInit {
       this.tripService.addTrip(this.addForm.value)
         .subscribe((data: any) => {
           console.log(data);
-          this.router.navigate(['']);
+          this.router.navigate(['list-trips']);
         });
     }
   }

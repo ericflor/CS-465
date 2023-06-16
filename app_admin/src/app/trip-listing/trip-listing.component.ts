@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Trip } from 'models/trip';
 import { TripDataService } from 'services/trip-data.service';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'services/authentication.service';
 
 @Component({
   selector: 'app-trip-listing',
@@ -13,7 +14,7 @@ import { Router } from '@angular/router';
 export class TripListingComponent implements OnInit {
   // trips: Array<any> = trips;
 
-  constructor(private tripDataService: TripDataService, private router: Router) {}
+  constructor(private tripDataService: TripDataService, private router: Router, private auth: AuthenticationService) {}
 
   ngOnInit(): void {
     this.getTrips();
@@ -22,15 +23,9 @@ export class TripListingComponent implements OnInit {
   trips: Trip[] = []; // needs to be initialized
   message: string | undefined; // needs to be initialized
 
-  // THIS WAY IS DEPRECATED AND WON'T WORK WITH HOW I SET UP HTTPCLIENT
-  // private getTrips(): void {
-  //   console.log('Inside TripListingComponent#getTrips');
-  //   this.message = 'Searching for trips';
-  //   this.tripDataService.getTrips().then((foundTrips: string | any[]) => {
-  //     this.message = foundTrips.length > 0 ? '' : 'No trips found';
-  //     this.trips = foundTrips;
-  //   });
-  // }
+  public isLoggedIn(): boolean {
+    return this.auth.isLoggedIn();
+  }
 
   private getTrips(): void {
     console.log('Inside TripListingComponent#getTrips');
